@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const logs = await getCollection('appdev', ({ data }) => !data.draft);
+  return logs.map((log) => ({
+    params: { slug: log.id },
+    props: { log },
+  }));
+}
+
+const { log } = Astro.props;
+const { Content } = await render(log);
+
+function formatDate(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
+---
+<BaseLayout title={`${log.data.title}｜Republic of Wilson`}>
+  <section>
+    <a class="back-link" href="/appdev/">← 回開發日誌列表</a>
+    <div class="article-head">
+      <span class="tag">{log.data.stage}</span>
+      <h1>{log.data.title}</h1>
+      <div class="date">{formatDate(log.data.date)}</div>
+    </div>
+    <div class="prose">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>

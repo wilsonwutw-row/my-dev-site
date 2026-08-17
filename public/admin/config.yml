@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: wilsonwutw-row/my-dev-site
+  # 如果你的 repo 預設分支不是 main（例如是 master），把下面這行改掉
+  branch: main
+
+media_folder: /public/uploads
+public_folder: /uploads
+
+collections:
+  - name: settings
+    label: 網站設定
+    files:
+      - name: general
+        label: 首頁文字與 App 進度
+        file: src/data/site.json
+        fields:
+          - { label: "Hero 主標題", name: heroTitle, widget: string }
+          - { label: "Hero 副標題", name: heroSubtitle, widget: text }
+          - { label: "關於我文字", name: aboutText, widget: text }
+          - { label: "聯絡信箱", name: contactEmail, widget: string }
+          - { label: "App 專案名稱", name: appProjectName, widget: string }
+          - label: "App 目前階段"
+            name: appStage
+            widget: select
+            options: ["企劃", "設計", "開發", "測試", "上線"]
+          - { label: "App 專案簡介", name: appDescription, widget: text }
+
+  - name: software
+    label: 軟體心得
+    label_singular: 文章
+    folder: src/content/software
+    create: true
+    fields:
+      - { label: "標題", name: title, widget: string }
+      - { label: "分類標籤", name: tag, widget: string, hint: "例如：工具推薦、教學、開箱心得" }
+      - { label: "摘要", name: description, widget: text }
+      - { label: "發布日期", name: pubDate, widget: datetime }
+      - { label: "先不要發布（草稿）", name: draft, widget: boolean, default: false, required: false }
+      - { label: "內文", name: body, widget: markdown }
+
+  - name: appdev
+    label: App 開發日誌
+    label_singular: 日誌
+    folder: src/content/appdev
+    create: true
+    fields:
+      - { label: "標題", name: title, widget: string }
+      - label: "階段標籤"
+        name: stage
+        widget: select
+        options: ["企劃", "設計", "開發", "測試", "上線"]
+      - { label: "日期", name: date, widget: datetime }
+      - { label: "先不要發布（草稿）", name: draft, widget: boolean, default: false, required: false }
+      - { label: "內文", name: body, widget: markdown }
+
+  - name: interests
+    label: 語言學習 & 個人興趣
+    label_singular: 文章
+    folder: src/content/interests
+    create: true
+    fields:
+      - { label: "標題", name: title, widget: string }
+      - { label: "分類標籤", name: tag, widget: string, hint: "例如：日文學習、閱讀心得、興趣分享" }
+      - { label: "摘要", name: description, widget: text }
+      - { label: "發布日期", name: pubDate, widget: datetime }
+      - { label: "先不要發布（草稿）", name: draft, widget: boolean, default: false, required: false }
+      - { label: "內文", name: body, widget: markdown }

@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('software', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
+---
+<BaseLayout title={`${post.data.title}｜Republic of Wilson`} description={post.data.description}>
+  <section>
+    <a class="back-link" href="/software/">← 回軟體心得列表</a>
+    <div class="article-head">
+      <span class="tag">{post.data.tag}</span>
+      <h1>{post.data.title}</h1>
+      <div class="date">{formatDate(post.data.pubDate)}</div>
+    </div>
+    <div class="prose">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>
